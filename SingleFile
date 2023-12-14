@@ -1,0 +1,61 @@
+import cv2
+import pytesseract
+import os
+
+# Path to the Tesseract executable (change this according to your installation)
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+
+# Path to the folder containing images
+folder_path = "./Output/"
+
+# Get a sorted list of filenames
+filenames = sorted(os.listdir(folder_path), key=lambda x: int(x.split('.')[0][1:]))
+
+# Iterate over each file in the sorted order
+#for filename in filenames:
+    # Construct the full path to the image file
+    #image_path = os.path.join(folder_path, filename)
+
+    # Read the image using OpenCV
+image = cv2.imread("./Output/f74.png")
+
+    # Convert the image to grayscale
+gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    # Use pytesseract to perform OCR on the grayscale image
+text = pytesseract.image_to_string(gray_image)
+
+
+    # Split the text into lines
+lines = text.split('\n')
+
+    # Initialize a variable to store the extracted text
+extracted_text = ""
+
+    # Flag to check if the line should be added to the extracted text
+add_to_extracted_text = False
+
+    # Iterate through the lines
+for line in lines:
+        # Check if the line starts with a digit followed by a space
+    if line and line[0].isdigit() and line[1] == ' ':
+            # Set the flag to start adding lines to the extracted text
+        add_to_extracted_text = True
+
+    if line and line[0].isdigit() and line[1].isdigit() and line[2] == ' ':
+            # Set the flag to start adding lines to the extracted text
+        add_to_extracted_text = True
+
+        # Check if the line is not empty and the flag is set
+    if add_to_extracted_text and line.strip():
+            # Add the line to the extracted text
+        extracted_text += line + ' '
+
+        # Check if the line is empty (end of the block)
+    if add_to_extracted_text and not line:
+            # Break the loop if the block has ended
+        break
+
+    # Remove trailing spaces and newlines from the extracted text
+    result_text = extracted_text.strip()
+    print(result_text)
