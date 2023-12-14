@@ -5,8 +5,9 @@ Required pytesseract
 2. pip install pytesseract
 
 
+
 Example
 File video : Extract unique frame using the extractor
-Image : For single file use SingleFile
-      : For multiple file use MultipleFile
+Image : For single file use SingleFile.py
+      : For multiple file use MultipleFile.py
 
